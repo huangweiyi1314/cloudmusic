@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/p_login_bg"
+    android:orientation="vertical">
+       <LinearLayout
+           android:id="@+id/id_linearlayout_about"
+           android:layout_width="match_parent"
+           android:layout_height="200dp"
+           android:layout_marginTop="40dp"
+
+           android:orientation="vertical">
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:src="@drawable/about_logo"/>
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:textSize="18sp"
+               android:layout_marginTop="20dp"
+
+               android:text="杰哥版播放器"/>
+       </LinearLayout>
+</LinearLayout>

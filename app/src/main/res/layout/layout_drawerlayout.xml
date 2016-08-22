@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whitesmoke"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@drawable/topinfo_ban_bg">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/id_user_icon"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/hugh" />
+
+        <TextView
+            android:id="@+id/id_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/id_user_icon"
+            android:layout_marginLeft="15dp"
+            android:text="杰哥的笑你百度不到"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/id_drawerlayout_listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@null">
+
+    </ListView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+       <TextView
+           android:id="@+id/id_drawerlayout_setting"
+           android:layout_width="0dp"
+           android:layout_height="match_parent"
+           android:text="设置"
+           android:textSize="18sp"
+           android:gravity="center"
+           android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/id_drawerlayout_exit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="退出"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</LinearLayout>
