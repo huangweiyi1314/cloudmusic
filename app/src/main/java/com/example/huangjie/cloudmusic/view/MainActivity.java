@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDataList.add(slideItem3);
         SlideItem slideItem4 = new SlideItem("听歌识曲", Utils.getDrawable(R.drawable.lay_icn_recording), "", false);
         mDataList.add(slideItem4);
-        SlideItem slideItem5 = new SlideItem("主题换肤", Utils.getDrawable(R.drawable.lay_icn_upload), "官方红", false);
+        SlideItem slideItem5 = new SlideItem("主题换肤", Utils.getDrawable(R.drawable.topmenu_icn_skin), "官方红", false);
         mDataList.add(slideItem5);
         SlideItem slideItem6 = new SlideItem("夜间模式", Utils.getDrawable(R.drawable.lay_icn_document), "", true);
         mDataList.add(slideItem6);

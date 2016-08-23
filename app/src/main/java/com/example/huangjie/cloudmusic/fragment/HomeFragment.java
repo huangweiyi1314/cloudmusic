@@ -17,6 +17,7 @@ import com.example.huangjie.cloudmusic.R;
  */
 public class HomeFragment extends Fragment {
     private static final int VIEWPAGERR_COUNT = 4;
+    private View mContentView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,16 +26,22 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.layout_fragment_home, container, false);
-        initView(view);
-        return view;
+        mContentView = inflater.inflate(R.layout.layout_fragment_home, container, false);
+        initView();
+        return mContentView;
     }
 
-    private void initView(View view) {
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    private void initView() {
         final String titles[] = new String[]{"个性推荐", "歌单", "影单", "AV"};
-        ViewPager viewpager = (ViewPager) view.findViewById(R.id.id_fragment_home_viewpager);
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.id_fragment_home_tablayout);
-        viewpager.setAdapter(new FragmentPagerAdapter(getActivity().getSupportFragmentManager()) {
+        ViewPager viewpager = (ViewPager) mContentView.findViewById(R.id.id_fragment_home_viewpager);
+        TabLayout tabLayout = (TabLayout) mContentView.findViewById(R.id.id_fragment_home_tablayout);
+        viewpager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
@@ -42,7 +49,7 @@ public class HomeFragment extends Fragment {
                     return personFragment;
                 } else if (position == 1) {
                     MusicMenuFragment musicFragment = new MusicMenuFragment();
-
+                    return musicFragment;
                 } else if (position == 2) {
                     MovieMenuFragment movieFragment = new MovieMenuFragment();
                     return movieFragment;
@@ -50,7 +57,7 @@ public class HomeFragment extends Fragment {
                     AVMenuFragment avFragment = new AVMenuFragment();
                     return avFragment;
                 }
-                return new MusicMenuFragment();
+                return new PersonSuggestFragment();
             }
 
             @Override
@@ -64,5 +71,6 @@ public class HomeFragment extends Fragment {
             }
         });
         tabLayout.setupWithViewPager(viewpager);
+
     }
 }

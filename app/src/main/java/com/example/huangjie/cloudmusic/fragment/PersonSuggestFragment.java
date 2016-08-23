@@ -1,5 +1,6 @@
 package com.example.huangjie.cloudmusic.fragment;
 
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,7 @@ public class PersonSuggestFragment extends Fragment {
     private ViewPager mViewPager;
     private ImageView[] mPointer;
     private DateView mDateView;
+    private ImageView mImageViewRun;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -98,6 +100,7 @@ public class PersonSuggestFragment extends Fragment {
 
             }
         });
+
     }
 
     /**
@@ -113,7 +116,7 @@ public class PersonSuggestFragment extends Fragment {
         mPointer[3] = (ImageView) view.findViewById(R.id.id_personsuggest_pointFour);
         mViewPager = (ViewPager) view.findViewById(R.id.id_personsuggest_viewpager);
         mDateView = (DateView) view.findViewById(R.id.id_personsuggest_DateView);
-
+        mImageViewRun = (ImageView) view.findViewById(R.id.id_personsuggest_linearRun);
         final int[] pictures = new int[]{R.drawable.index_new_america, R.drawable.index_new_china,
                 R.drawable.index_new_japan, R.drawable.index_new_korea};
         //为ViewPager设置适配器
