@@ -26,7 +26,7 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="本地音乐"
-            android:textColor="@color/black"
+            android:textColor="@color/main_black"
             android:textSize="16sp" />
 
         <TextView
@@ -37,7 +37,7 @@
             android:layout_marginLeft="8dp"
             android:gravity="center_vertical"
             android:text="(13)"
-            android:textColor="@color/darkgray"
+            android:textColor="@color/main_black"
             android:textSize="14sp" />
     </LinearLayout>
     <View
@@ -70,7 +70,7 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="最近播放"
-            android:textColor="@color/black"
+            android:textColor="@color/main_black"
             android:textSize="16sp" />
 
         <TextView
@@ -115,7 +115,7 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="下载管理"
-            android:textColor="@color/black"
+            android:textColor="@color/main_black"
             android:textSize="16sp" />
 
         <TextView
@@ -160,7 +160,7 @@
             android:layout_marginLeft="15dp"
             android:gravity="center_vertical"
             android:text="我的歌手"
-            android:textColor="@color/black"
+            android:textColor="@color/main_black"
             android:textSize="16sp" />
 
         <TextView

@@ -5,4 +5,5 @@ package com.example.huangjie.cloudmusic.constant;
  */
 public class Constant {
     public static  final int FRAGMENT_SUGGEST_VIEWPAGERCOUNT=4;
+    public static  final String SONG_DETAIL="song_detail";
 }

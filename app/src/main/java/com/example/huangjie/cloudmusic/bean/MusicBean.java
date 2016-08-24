@@ -3,10 +3,12 @@ package com.example.huangjie.cloudmusic.bean;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import java.io.Serializable;
+
 /**
  * Created by huangjie on 2016/8/22.
  */
-public class MusicBean {
+public class MusicBean  implements Serializable{
     private int id;
     private String name;
     private String special;

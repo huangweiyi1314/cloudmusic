@@ -65,9 +65,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
      * 初始化数据
      */
     private void initData() {
-        mMusicBeanList = MusicUtils.getAllMusic(mProgressBar,mLocalMusicNum);
-
-
+        mMusicBeanList = MusicUtils.getAllMusic(mProgressBar,mLocalMusicNum,null);
     }
 
     /**

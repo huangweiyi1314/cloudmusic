@@ -2,14 +2,12 @@ package com.example.huangjie.cloudmusic.utils;
 
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.global.CloudMusicApplication;
-
 import java.util.ArrayList;
 
 /**
@@ -21,7 +19,7 @@ public class MusicUtils {
      *
      * @return
      */
-    public static ArrayList<MusicBean> getAllMusic(final View view, final TextView textView) {
+    public static ArrayList<MusicBean> getAllMusic(final View view, final TextView textView, final Handler handler) {
         final ArrayList<MusicBean> mMusicBeanList = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>() {
@@ -60,7 +58,7 @@ public class MusicUtils {
 
                     int size = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
                     musicBean.setSize((int) ((size * 1.0) / (1024 * 1024)) + "M");
-                    Log.i("huangjie",musicBean.toString());
+             //       Log.i("huangjie", musicBean.toString());
                     mMusicBeanList.add(musicBean);
                     int album_id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 
@@ -74,8 +72,11 @@ public class MusicUtils {
                 if (view != null) {
                     view.setVisibility(View.GONE);
                 }
-                if (textView!=null){
-                    textView.setText(mMusicBeanList.size()+"");
+                if (textView != null) {
+                    textView.setText("("+mMusicBeanList.size() + ")");
+                }
+                if (handler != null) {
+                    handler.sendEmptyMessage(0x11);
                 }
             }
         }.execute();

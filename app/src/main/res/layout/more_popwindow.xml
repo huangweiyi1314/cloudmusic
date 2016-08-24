@@ -1,7 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/darkgray"
+            android:text="歌曲" />
+        <TextView
+            android:id="@+id/id_popwindow_songname"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textSize="16sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/darkgray"
+            android:layout_height="wrap_content"
+            android:text="爱在记忆中找你" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_popwindow_next"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/lay_icn_next" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="18dp"
+            android:text="下一首"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="67dp"
+        android:background="@color/whitesmoke">
+
+    </View>
+    <LinearLayout
+        android:id="@+id/id_popwindow_collect"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="7dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/list_icn_fav_red" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:text="收藏"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="67dp"
+        android:background="@color/whitesmoke">
+
+    </View>
+    <LinearLayout
+        android:id="@+id/id_popwindow_share"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="3dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/lay_icn_share" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="18dp"
+            android:text="分享"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="67dp"
+        android:background="@color/whitesmoke">
+
+    </View>
+    <LinearLayout
+        android:id="@+id/id_popwindow_delete"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="3dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/lay_icn_delete" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_marginLeft="18dp"
+            android:text="删除"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="67dp"
+        android:background="@color/whitesmoke">
+
+    </View>
 </LinearLayout>

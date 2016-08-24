@@ -20,8 +20,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
-
 import com.example.huangjie.cloudmusic.R;
 import com.example.huangjie.cloudmusic.bean.SlideItem;
 import com.example.huangjie.cloudmusic.fragment.HomeFragment;
@@ -30,7 +28,6 @@ import com.example.huangjie.cloudmusic.fragment.MusicMenuFragment;
 import com.example.huangjie.cloudmusic.utils.CommonAdapter;
 import com.example.huangjie.cloudmusic.utils.Utils;
 import com.example.huangjie.cloudmusic.utils.ViewHolder;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
         initData();
         initView();
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mSuggestIcon.setOnClickListener(this);
         mListView.setAdapter(mAdater = new CommonAdapter<SlideItem>(this, mDataList, R.layout.drawerlayout_list_item) {
             @Override
-            public void convert(ViewHolder viewHolder, SlideItem data) {
+            public void convert(ViewHolder viewHolder, SlideItem data,int position) {
                 viewHolder.setImageDrawable(R.id.id_left_listitem_iv, data.getIcon());
                 viewHolder.setTextView(R.id.id_left_listitem_tv, data.getTitle());
                 if (!TextUtils.isEmpty(data.getmDesc())) {
@@ -99,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mDraerLayout.setDrawerListener(mActionBarDrawerToggle);
         mActionBarDrawerToggle.syncState();
         mSuggestIcon.setImageDrawable(Utils.getDrawable(R.drawable.actionbar_discover_selected));
-
         getSupportFragmentManager().beginTransaction().replace(R.id.id_main_container, new HomeFragment()).commit();
 
     }
@@ -193,6 +188,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SlideItem slideItem2 = new SlideItem("积分商城", Utils.getDrawable(R.drawable.lay_icn_similar), "10积分", false);
         mDataList.add(slideItem2);
         SlideItem slideItem3 = new SlideItem("会员中心", Utils.getDrawable(R.drawable.topmenu_icn_vip), "", false);
+        SlideItem slideItem7 = new SlideItem("赞赏杰哥",Utils.getDrawable(R.drawable.lay_icn_shang),"",false);
+        mDataList.add(slideItem7);
         mDataList.add(slideItem3);
         SlideItem slideItem4 = new SlideItem("听歌识曲", Utils.getDrawable(R.drawable.lay_icn_recording), "", false);
         mDataList.add(slideItem4);
@@ -217,7 +214,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Window window = mAlertDialog.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.alpha = 0.9f;
-
         //获取屏幕宽度
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
@@ -226,7 +222,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int windowWidth = displayMetrics.widthPixels;
         //设置透明度
         lp.width = (int) (windowWidth * 0.8);
-
         window.setAttributes(lp);
         mAlertDialog.show();
 

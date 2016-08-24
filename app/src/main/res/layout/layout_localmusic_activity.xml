@@ -38,6 +38,7 @@
         android:id="@+id/id_localmusic_musicList"
         android:layout_width="match_parent"
         android:scrollbars="none"
+        android:divider="@color/lightgrey"
         android:layout_height="match_parent">
 
     </ListView>

@@ -4,14 +4,27 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/main_color</item>
-
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorPrimaryDark">@color/main_color</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@drawable/p_login_bg</item>
+    </style>
 
     <style name="myToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
         <item name="android:color">@color/white</item>
+    </style>
+
+    <style name="AnimationFade">
+        <item name="android:inAnimation">
+            @anim/in_animation
+        </item>
+        <item name="android:outAnimation">
+            @anim/out_animation
+        </item>
     </style>
 
 </resources>
