@@ -21,6 +21,7 @@ import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.constant.Constant;
 import com.example.huangjie.cloudmusic.utils.CommonAdapter;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
+import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
 import com.example.huangjie.cloudmusic.utils.ViewHolder;
 
 import java.util.ArrayList;
@@ -41,30 +42,9 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            mMusicListView.setAdapter(new CommonAdapter<MusicBean>(LocalMusicActivity.this, mMusicBeanData, R.layout.localmusic_list_item) {
-                @Override
-                public void convert(ViewHolder viewHolder, MusicBean data, final int position) {
-                    viewHolder.setTextView(R.id.id_musiclist_item_songname, data.getName());
-                    if (!data.getSongerName().equals("<unknown>")) {
-                        viewHolder.setTextView(R.id.id_musiclist_item_songner, data.getSongerName());
-                    }
-                    mMorePopWindow.setData(data);
-                    //Log.i("huangjie", "这是数据 决定是否是多少vsvs从vwefsdcsddsvv" + data.toString());
-                    viewHolder.setTextView(R.id.id_musiclist_item_songspecial, data.getSpecial());
-                    mMorePopWindow.setData(mMusicBeanData.get(position));
 
-                    viewHolder.getViewById(R.id.id_musiclist_item_more).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mMorePopWindow != null) {
-                                mMorePopWindow.setData(mMusicBeanData.get(position));
-                                mMorePopWindow.showAtLocation(findViewById(R.id.id_localmusic_playall), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                                setPopWindow();
-                            }
-                        }
-                    });
-                }
-            });
+
+            setListViewAdater();
         }
     };
 
@@ -72,8 +52,11 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_localmusic_activity);
+
         initView();
+
         initDate();
+
         initEvent();
     }
 
@@ -88,7 +71,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LocalMusicActivity.this, PlayMusicActivity.class);
-                intent.putExtra(Constant.SONG_DETAIL, mMusicBeanData.get(position));
+                intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanData.get(position));
                 startActivity(intent);
             }
         });
@@ -104,7 +87,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * 初始化
+     * 初始化View
      */
     private void initView() {
         mLinearPlayAll = (LinearLayout) findViewById(R.id.id_localmusic_playall);
@@ -118,6 +101,38 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         mMorePopWindow = new MorePopWindow(this);
     }
 
+
+    /**
+     * 设置ListViewAdapter
+     */
+    private void setListViewAdater() {
+        SharePreferenceUtils.putMusicNumber(mMusicBeanData.size());//存储系统中的所有的音乐文件数量
+        mMusicListView.setAdapter(new CommonAdapter<MusicBean>(LocalMusicActivity.this, mMusicBeanData, R.layout.localmusic_list_item) {
+            @Override
+            public void convert(ViewHolder viewHolder, MusicBean data, final int position) {
+                viewHolder.setTextView(R.id.id_musiclist_item_songname, data.getName());
+                if (!data.getSongerName().equals("<unknown>")) {
+                    viewHolder.setTextView(R.id.id_musiclist_item_songner, data.getSongerName());
+                }
+                mMorePopWindow.setData(data);
+                //Log.i("huangjie", "这是数据 决定是否是多少vsvs从vwefsdcsddsvv" + data.toString());
+                viewHolder.setTextView(R.id.id_musiclist_item_songspecial, data.getSpecial());
+                mMorePopWindow.setData(mMusicBeanData.get(position));
+
+                viewHolder.getViewById(R.id.id_musiclist_item_more).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mMorePopWindow != null) {
+                            mMorePopWindow.setData(mMusicBeanData.get(position));
+                            mMorePopWindow.showAtLocation(findViewById(R.id.id_localmusic_playall), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+                            setPopWindow();
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -125,15 +140,10 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.id_toolbar_title_search:
-
                 break;
             case R.id.id_localmusic_playall:
 
                 break;
-            case R.id.id_musiclist_item_more:
-
-                break;
-
         }
     }
 

@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
 import com.example.huangjie.cloudmusic.bean.MusicBean;
+import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.global.CloudMusicApplication;
 import java.util.ArrayList;
 
@@ -36,7 +37,6 @@ public class MusicUtils {
                 Cursor cursor = CloudMusicApplication.getContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
                         MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
                 while (cursor.moveToNext()) {
-
                     MusicBean musicBean = new MusicBean();
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     musicBean.setId(id);
@@ -61,6 +61,7 @@ public class MusicUtils {
              //       Log.i("huangjie", musicBean.toString());
                     mMusicBeanList.add(musicBean);
                     int album_id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+              //      DataBaseUtils.insert(id,name,speical,songerName,url,duration,(int) ((size * 1.0) / (1024 * 1024)) + "M");
 
                 }
                 return null;

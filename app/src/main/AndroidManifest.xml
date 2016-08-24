@@ -35,6 +35,9 @@
             android:theme="@style/AppTheme">
 
         </activity>
+        <service android:name=".service.PlayMusicService">
+
+        </service>
     </application>
 
 </manifest>

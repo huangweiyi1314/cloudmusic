@@ -18,20 +18,12 @@ public class MusicBean  implements Serializable{
     private String size;
     private Bitmap mIcon;
 
-    public void setDuration(float duration) {
-        this.duration = duration;
-    }
-
     public void setmIcon(Bitmap mIcon) {
         this.mIcon = mIcon;
     }
 
     public Bitmap getmIcon() {
         return mIcon;
-    }
-
-    public float getDuration() {
-        return duration;
     }
 
     public int getId() {
