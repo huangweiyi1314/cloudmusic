@@ -72,6 +72,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LocalMusicActivity.this, PlayMusicActivity.class);
                 intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanData.get(position));
+                intent.putExtra(Constant.CURRENT_POSITION,position);
                 startActivity(intent);
             }
         });

@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import com.example.huangjie.cloudmusic.R;
+import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
 
 /**
  * Created by huangjie on 2016/8/18.
@@ -41,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
     private void enterMainActivity() {
         mLinearAbout.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, MainActivity.class);
+        SharePreferenceUtils.putPlayStatus(false);
         startActivity(intent);
         finish();
     }

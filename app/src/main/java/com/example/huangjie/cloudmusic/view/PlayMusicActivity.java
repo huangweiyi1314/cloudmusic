@@ -16,7 +16,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.huangjie.cloudmusic.R;
 import com.example.huangjie.cloudmusic.bean.MusicBean;
@@ -43,8 +45,9 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     private MusicBean mCurrentMusic;
     private ArrayList<ImageView> mImageViewList;
     private ImageView mImgNeddle;
-
-    private Handler mHandler = new Handler(){
+    private int mCurrentPosition;
+    private ImageView mImgBack;
+    private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -53,12 +56,16 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             initEvent();
         }
     };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_play_music);
+        //获取传递过来的musicBean
         mCurrentMusic = (MusicBean) getIntent().getSerializableExtra(Constant.CURRENT_MUSIC);
-        Log.i("huangjie",mCurrentMusic.toString()+"这是 playmusic");
+        mCurrentPosition = getIntent().getIntExtra(Constant.CURRENT_POSITION, 1);
+        Log.i("huangjie", mCurrentMusic.toString() + "这是 playmusic");
+
         if (mCurrentMusic == null) {
             mCurrentMusic = mMusicBeanList.get(0);
         }
@@ -86,7 +93,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      */
     private void initData() {
         mMusicBeanList = new ArrayList<>();
-        mMusicBeanList = MusicUtils.getAllMusic(null,null,mHandler);
+        mMusicBeanList = MusicUtils.getAllMusic(null, null, mHandler);
     }
 
 
@@ -100,12 +107,16 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mImgPrecious.setOnClickListener(this);
         mImgPlayRule.setOnClickListener(this);
         mImgMuicList.setOnClickListener(this);
+        mImgBack.setOnClickListener(this);
 
         setViewPagerAdater();//给ViewPager设置adapter
+
+
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 mImgNeddle.clearAnimation();
+                stopAnimation();
             }
 
             @Override
@@ -113,6 +124,9 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                 startAnimation();
                 SharePreferenceUtils.putPlayStatus(true);
                 mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
+                mCurrentMusic = mMusicBeanList.get(position);
+                Log.i("huangjie", mMusicBeanList.get(position).toString() + "这是切换数据");
+                startService();
             }
 
             @Override
@@ -135,6 +149,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             mImageViewList.add(imageView);
         }
+
         mViewPager = (ViewPager) findViewById(R.id.id_playmusic_viewpager);
         mImgStart = (ImageView) findViewById(R.id.id_playmusic_startplay);
         mImgNext = (ImageView) findViewById(R.id.id_playmusic_next);
@@ -142,13 +157,11 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mImgPlayRule = (ImageView) findViewById(R.id.id_playmusic_playrule);
         mImgMuicList = (ImageView) findViewById(R.id.id_playmusic_musiclist);
         mImgNeddle = (ImageView) findViewById(R.id.id_playmusic_neddle);
-        if (SharePreferenceUtils.getPlayStatus()) {
-            mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
-            startAnimation();
-        } else {
-            mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_play));
-            mImgNeddle.clearAnimation();
-        }
+        mImgBack = (ImageView) findViewById(R.id.id_playmusic_back);
+        TextView tvSongName = (TextView) findViewById(R.id.id_playmusic_songname);
+        tvSongName.setText(mCurrentMusic.getName());
+        TextView tvSongner = (TextView) findViewById(R.id.id_playmusic_songner);
+        tvSongner.setText(mCurrentMusic.getSongerName());
 
     }
 
@@ -179,12 +192,8 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                 return view == object;
             }
 
-            @Override
-            public void setPrimaryItem(ViewGroup container, int position, Object object) {
-                super.setPrimaryItem(container, position, object);
-            }
-
         });
+        mViewPager.setCurrentItem(mCurrentPosition);
 
     }
 
@@ -200,15 +209,20 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                     mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
                     SharePreferenceUtils.putPlayStatus(true);
                     startAnimation();
+                    startService();
                 }
                 break;
             case R.id.id_playmusic_next:
+
                 break;
             case R.id.id_playmusic_precious:
                 break;
             case R.id.id_playmusic_playrule:
                 break;
             case R.id.id_playmusic_musiclist:
+                break;
+            case R.id.id_playmusic_back:
+                finish();
                 break;
         }
     }
@@ -228,13 +242,19 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 开始动画效果
      */
     private void startAnimation() {
-        mImgNeddle.clearAnimation();
-        int currentItem = mViewPager.getCurrentItem();
-        mCurrentMusic = mMusicBeanList.get(currentItem);//获取当前的音乐
-        mImageViewList.get(currentItem).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_45);
+        animation.setInterpolator(new LinearInterpolator());
         animation.setFillAfter(true);
         mImgNeddle.startAnimation(animation);
+
+    }
+
+    /**
+     * 打开Service
+     */
+    public void startService() {
+        int currentItem = mViewPager.getCurrentItem();
+        mImageViewList.get(currentItem).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
         Intent intent = new Intent(this, PlayMusicService.class);
         intent.putExtra(Constant.CURRENT_MUSIC, mCurrentMusic.getUrl());
         startService(intent);

@@ -44,7 +44,7 @@
         android:textSize="12sp"
         android:layout_marginLeft="3dp"
         android:layout_toRightOf="@id/id_musiclist_item_songner"/>
-    <LinearLayout
+     <LinearLayout
         android:id="@+id/id_musiclist_item_more"
         android:layout_width="60dp"
         android:layout_alignParentRight="true"

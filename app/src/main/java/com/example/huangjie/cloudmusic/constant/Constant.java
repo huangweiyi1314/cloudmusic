@@ -33,4 +33,5 @@ public class Constant {
 
     public static  final String MUSIC_TABLE_NAME="music";
 
+    public static final String CURRENT_POSITION = "current_position";
 }

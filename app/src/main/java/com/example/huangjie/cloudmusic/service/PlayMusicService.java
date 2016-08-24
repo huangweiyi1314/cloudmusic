@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.util.Log;
@@ -52,7 +53,8 @@ public class PlayMusicService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mcurrentUrl = (String) intent.getSerializableExtra(Constant.CURRENT_MUSIC);
-        Log.i("huangjie",mcurrentUrl+"URL+++++++++");
+      //  Log.i("huangjie",mcurrentUrl+"URL+++++++++");
+
         if (mcurrentUrl!=null){
             startPlay(mcurrentUrl);
         }
@@ -65,17 +67,18 @@ public class PlayMusicService extends Service {
             @Override
             public void run() {
                 super.run();
-                if (mMediaPlayer == null) {
-                    mMediaPlayer = new MediaPlayer();
-                    SharePreferenceUtils.putPlayStatus(true);
+                if (mMediaPlayer!=null) {
+                    mMediaPlayer.release();
+                    mMediaPlayer = null;
                 }
-                if (mMediaPlayer.isPlaying()) {
-                    mMediaPlayer.stop();
-                }
+                mMediaPlayer = new MediaPlayer();
+                SharePreferenceUtils.putPlayStatus(true);
                 try {
+                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                     mMediaPlayer.setDataSource(url);
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
+
                 } catch (IOException e) {
                     SharePreferenceUtils.putPlayStatus(false);
                     e.printStackTrace();
@@ -89,10 +92,9 @@ public class PlayMusicService extends Service {
      * 暂停播放
      */
     public void pausePlay() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.pause();
+       mMediaPlayer.release();
             SharePreferenceUtils.putPlayStatus(false);
-        }
+
     }
 
 
