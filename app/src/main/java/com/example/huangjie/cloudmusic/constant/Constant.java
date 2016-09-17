@@ -34,4 +34,8 @@ public class Constant {
     public static  final String MUSIC_TABLE_NAME="music";
 
     public static final String CURRENT_POSITION = "current_position";
+    public static final String ACTION_PAUSE = "action_pause";
+    public static  final int VIEWPAGER_STATE_START=1;
+
+    public static  final String PLAY_NEXT="play_next";
 }

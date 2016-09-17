@@ -1,6 +1,5 @@
 package com.example.huangjie.cloudmusic.view;
 
-import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+
 import com.example.huangjie.cloudmusic.R;
 import com.example.huangjie.cloudmusic.bean.SlideItem;
 import com.example.huangjie.cloudmusic.fragment.HomeFragment;
@@ -28,6 +28,7 @@ import com.example.huangjie.cloudmusic.fragment.MusicMenuFragment;
 import com.example.huangjie.cloudmusic.utils.CommonAdapter;
 import com.example.huangjie.cloudmusic.utils.Utils;
 import com.example.huangjie.cloudmusic.utils.ViewHolder;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {

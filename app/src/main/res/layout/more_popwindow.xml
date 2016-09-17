@@ -37,8 +37,8 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/lay_icn_next" />
         <TextView
@@ -48,7 +48,7 @@
             android:textSize="14sp"
             android:textColor="@color/black"
             android:layout_marginLeft="18dp"
-            android:text="下一首"/>
+            android:text="下一首播放"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -65,8 +65,8 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
             android:layout_marginLeft="7dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/list_icn_fav_red" />
@@ -94,8 +94,8 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/lay_icn_share" />
@@ -123,8 +123,8 @@
         android:layout_height="50dp">
 
         <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/lay_icn_delete" />

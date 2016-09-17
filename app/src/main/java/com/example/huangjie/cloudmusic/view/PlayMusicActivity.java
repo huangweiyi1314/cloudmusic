@@ -1,6 +1,9 @@
 package com.example.huangjie.cloudmusic.view;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +21,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.example.huangjie.cloudmusic.R;
@@ -47,15 +51,37 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     private ImageView mImgNeddle;
     private int mCurrentPosition;
     private ImageView mImgBack;
+    private TextView tvSongName;
+    private TextView tvSongner;
+    private SeekBar mPlayProgress;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             initView();
-
+            mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
             initEvent();
+
         }
     };
+
+    private BroadcastReceiver mReceiver =new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+                playNext();
+            Log.i("huangjie","播放下一首");
+        }
+    };
+
+    /**
+     * 播放下一首
+     */
+    private void playNext() {
+        mCurrentPosition++;
+        mViewPager.setCurrentItem(mCurrentPosition);
+        startAnimation();
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,14 +90,12 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         //获取传递过来的musicBean
         mCurrentMusic = (MusicBean) getIntent().getSerializableExtra(Constant.CURRENT_MUSIC);
         mCurrentPosition = getIntent().getIntExtra(Constant.CURRENT_POSITION, 1);
-        Log.i("huangjie", mCurrentMusic.toString() + "这是 playmusic");
+        Log.i("huangjie", "这是第一个执行");
 
         if (mCurrentMusic == null) {
             mCurrentMusic = mMusicBeanList.get(0);
         }
-
         initData();
-
 
         //判断当前的系统版本
         if (Build.VERSION.SDK_INT >= 21) {
@@ -81,11 +105,13 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             view.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
             ActionBar actionBar = getSupportActionBar();
-
             if (actionBar != null) {
                 actionBar.hide();
             }
         }
+
+        //注册广播接收器
+        registerReceiver(mReceiver,new IntentFilter(Constant.PLAY_NEXT));
     }
 
     /**
@@ -101,6 +127,10 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 初始化事件
      */
     private void initEvent() {
+        /**
+         * 给ViewPager设置adapter
+         */
+        setViewPagerAdater();
 
         mImgStart.setOnClickListener(this);
         mImgNext.setOnClickListener(this);
@@ -108,32 +138,61 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mImgPlayRule.setOnClickListener(this);
         mImgMuicList.setOnClickListener(this);
         mImgBack.setOnClickListener(this);
-
-        setViewPagerAdater();//给ViewPager设置adapter
-
-
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                mImgNeddle.clearAnimation();
-                stopAnimation();
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                startAnimation();
-                SharePreferenceUtils.putPlayStatus(true);
                 mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
+                SharePreferenceUtils.putPlayStatus(true);
+                mCurrentPosition = position;//更新当前的position
+                startAnimation();
                 mCurrentMusic = mMusicBeanList.get(position);
-                Log.i("huangjie", mMusicBeanList.get(position).toString() + "这是切换数据");
-                startService();
+                resetTitle();
+                //    Log.i("huangjie", mMusicBeanList.get(position).toString() + "这是切换数据");
+                startService(position);
+                Log.i("huangjie", "切换当前执行222222222222");
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                Log.i("huangjie", "切换当前执行333333333" + state);
+                switch (state) {
+                    case 1:
+                        mImgNeddle.clearAnimation();
+                        if (SharePreferenceUtils.getPlayStatus()) {
+                            //  mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
+                            stopAnimation();
+                            SharePreferenceUtils.putPlayStatus(false);
+                        }
+                        break;
+                }
+            }
+        });
+
+        mPlayProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.i("huangjie", progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
         });
+        Log.i("huangjie", "这是第二个执行");
+        mViewPager.setCurrentItem(mCurrentPosition);
+       // startService(mCurrentPosition);
+        startAnimation();//开始动画
     }
 
 
@@ -149,7 +208,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             mImageViewList.add(imageView);
         }
-
         mViewPager = (ViewPager) findViewById(R.id.id_playmusic_viewpager);
         mImgStart = (ImageView) findViewById(R.id.id_playmusic_startplay);
         mImgNext = (ImageView) findViewById(R.id.id_playmusic_next);
@@ -158,10 +216,10 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         mImgMuicList = (ImageView) findViewById(R.id.id_playmusic_musiclist);
         mImgNeddle = (ImageView) findViewById(R.id.id_playmusic_neddle);
         mImgBack = (ImageView) findViewById(R.id.id_playmusic_back);
-        TextView tvSongName = (TextView) findViewById(R.id.id_playmusic_songname);
-        tvSongName.setText(mCurrentMusic.getName());
-        TextView tvSongner = (TextView) findViewById(R.id.id_playmusic_songner);
-        tvSongner.setText(mCurrentMusic.getSongerName());
+        tvSongName = (TextView) findViewById(R.id.id_playmusic_songname);
+        tvSongner = (TextView) findViewById(R.id.id_playmusic_songner);
+        mPlayProgress = (SeekBar) findViewById(R.id.id_playmusic_seekbar);
+        resetTitle();//设置当前title
 
     }
 
@@ -193,7 +251,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             }
 
         });
-        mViewPager.setCurrentItem(mCurrentPosition);
 
     }
 
@@ -209,13 +266,18 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                     mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
                     SharePreferenceUtils.putPlayStatus(true);
                     startAnimation();
-                    startService();
+                    startService(mCurrentPosition);
                 }
                 break;
             case R.id.id_playmusic_next:
+                mCurrentPosition++;
+                mViewPager.setCurrentItem(mCurrentPosition);
 
                 break;
             case R.id.id_playmusic_precious:
+                mCurrentPosition--;
+                mViewPager.setCurrentItem(mCurrentPosition);
+
                 break;
             case R.id.id_playmusic_playrule:
                 break;
@@ -233,6 +295,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     private void stopAnimation() {
         mImgNeddle.clearAnimation();
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_d_45);
+        mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_play));
         animation.setFillAfter(true);
         mImgNeddle.startAnimation(animation);
         sendBroadcast(new Intent(Constant.ACTION_STOP_PLAY));
@@ -242,7 +305,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 开始动画效果
      */
     private void startAnimation() {
-        Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_45);
+        Animation animation = AnimationUtils.loadAnimation(PlayMusicActivity.this, R.anim.rotate_45);
         animation.setInterpolator(new LinearInterpolator());
         animation.setFillAfter(true);
         mImgNeddle.startAnimation(animation);
@@ -252,18 +315,32 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     /**
      * 打开Service
      */
-    public void startService() {
-        int currentItem = mViewPager.getCurrentItem();
-        mImageViewList.get(currentItem).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+    public void startService(int position) {
+
+        mImageViewList.get(position).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
+
         Intent intent = new Intent(this, PlayMusicService.class);
-        intent.putExtra(Constant.CURRENT_MUSIC, mCurrentMusic.getUrl());
+        /*if (SharePreferenceUtils.getPlayStatus()){
+            intent.setAction(Constant.ACTION_PAUSE);
+        }else{
+
+        }*/
+        intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanList.get(position).getUrl());
         startService(intent);
     }
 
+    /**
+     * 重置当前的显示的歌曲名称
+     */
+    public void resetTitle() {
+        tvSongName.setText(mCurrentMusic.getName());
+
+        tvSongner.setText(mCurrentMusic.getSongerName());
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SharePreferenceUtils.putPlayStatus(false);
+        unregisterReceiver(mReceiver);
     }
 }

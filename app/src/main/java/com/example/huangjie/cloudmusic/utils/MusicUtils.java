@@ -1,5 +1,6 @@
 package com.example.huangjie.cloudmusic.utils;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
 import com.example.huangjie.cloudmusic.bean.MusicBean;
+import com.example.huangjie.cloudmusic.constant.Constant;
 import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.global.CloudMusicApplication;
 import java.util.ArrayList;
@@ -84,5 +86,12 @@ public class MusicUtils {
 
         return mMusicBeanList;
 
+    }
+
+    /**
+     * 播放下一首
+     */
+    public static  void playNext(){
+        Utils.getContext().sendBroadcast(new Intent(Constant.PLAY_NEXT));
     }
 }

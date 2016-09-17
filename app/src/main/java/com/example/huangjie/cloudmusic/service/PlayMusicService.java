@@ -5,14 +5,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import android.util.Log;
-
 import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.constant.Constant;
+import com.example.huangjie.cloudmusic.utils.MusicUtils;
 import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
+import com.example.huangjie.cloudmusic.utils.Utils;
 
 import java.io.IOException;
 
@@ -52,56 +51,76 @@ public class PlayMusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mcurrentUrl = (String) intent.getSerializableExtra(Constant.CURRENT_MUSIC);
-      //  Log.i("huangjie",mcurrentUrl+"URL+++++++++");
+        mcurrentUrl = intent.getStringExtra(Constant.CURRENT_MUSIC);
+        //  Log.i("huangjie",mcurrentUrl+"URL+++++++++");
 
-        if (mcurrentUrl!=null){
-            startPlay(mcurrentUrl);
-        }
-
+        startPlay(mcurrentUrl);
         return super.onStartCommand(intent, flags, startId);
     }
 
     public void startPlay(final String url) {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                if (mMediaPlayer!=null) {
-                    mMediaPlayer.release();
-                    mMediaPlayer = null;
-                }
-                mMediaPlayer = new MediaPlayer();
                 SharePreferenceUtils.putPlayStatus(true);
                 try {
-                    mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                    if (mMediaPlayer == null) {
+                        mMediaPlayer = new MediaPlayer();
+                    } else {
+                        mMediaPlayer.reset();
+                    }
                     mMediaPlayer.setDataSource(url);
+
+                    mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.start();
+
+                        }
+                    });
                     mMediaPlayer.prepare();
-                    mMediaPlayer.start();
+                    setCompleteListener();
 
                 } catch (IOException e) {
                     SharePreferenceUtils.putPlayStatus(false);
                     e.printStackTrace();
                 }
+
             }
         }.start();
 
     }
 
     /**
+     * 为MediaPlayer设置播放下一首监听器
+     */
+    private void setCompleteListener() {
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                MusicUtils.playNext();
+            }
+        });
+    }
+
+    /**
      * 暂停播放
      */
     public void pausePlay() {
-       mMediaPlayer.release();
-            SharePreferenceUtils.putPlayStatus(false);
+        mMediaPlayer.pause();
+        SharePreferenceUtils.putPlayStatus(false);
 
     }
-
 
     @Override
     public void onDestroy() {
         unregisterReceiver(receiver);
         SharePreferenceUtils.putPlayStatus(false);
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
 
     }
 }

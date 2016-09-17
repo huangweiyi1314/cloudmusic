@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -29,15 +28,14 @@ import java.util.ArrayList;
 /**
  * Created by huangjie on 2016/8/22.
  */
-public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener {
+public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener, MoreBottomSheetDialog.IPlayNext, MoreBottomSheetDialog.IShareSong, MoreBottomSheetDialog.IdeleteSong {
     private ListView mMusicListView;
     private LinearLayout mLinearPlayAll;
     private ArrayList<MusicBean> mMusicBeanData;
     private ImageView mImgBack;
     private ImageView mImgSearch;
     private TextView mTitle;
-    private MorePopWindow mMorePopWindow;
-
+    private MoreBottomSheetDialog mBottomSheetDialog;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -72,7 +70,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(LocalMusicActivity.this, PlayMusicActivity.class);
                 intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanData.get(position));
-                intent.putExtra(Constant.CURRENT_POSITION,position);
+                intent.putExtra(Constant.CURRENT_POSITION, position);
                 startActivity(intent);
             }
         });
@@ -99,7 +97,11 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         mImgSearch = (ImageView) findViewById(R.id.id_toolbar_title_search);
         mTitle = (TextView) findViewById(R.id.id_toolbar_title_title);
         mTitle.setText("本地音乐");
-        mMorePopWindow = new MorePopWindow(this);
+        mBottomSheetDialog = new MoreBottomSheetDialog(this);
+        mBottomSheetDialog.setRootView(R.layout.more_popwindow);
+        mBottomSheetDialog.setPlayNext(this);
+        mBottomSheetDialog.setShare(this);
+        mBottomSheetDialog.setDelete(this);
     }
 
 
@@ -110,23 +112,22 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         SharePreferenceUtils.putMusicNumber(mMusicBeanData.size());//存储系统中的所有的音乐文件数量
         mMusicListView.setAdapter(new CommonAdapter<MusicBean>(LocalMusicActivity.this, mMusicBeanData, R.layout.localmusic_list_item) {
             @Override
-            public void convert(ViewHolder viewHolder, MusicBean data, final int position) {
+            public void convert(ViewHolder viewHolder, final MusicBean data, final int position) {
                 viewHolder.setTextView(R.id.id_musiclist_item_songname, data.getName());
                 if (!data.getSongerName().equals("<unknown>")) {
                     viewHolder.setTextView(R.id.id_musiclist_item_songner, data.getSongerName());
                 }
-                mMorePopWindow.setData(data);
+                //    mMorePopWindow.setData(data);
                 //Log.i("huangjie", "这是数据 决定是否是多少vsvs从vwefsdcsddsvv" + data.toString());
                 viewHolder.setTextView(R.id.id_musiclist_item_songspecial, data.getSpecial());
-                mMorePopWindow.setData(mMusicBeanData.get(position));
+                //  mMorePopWindow.setData(mMusicBeanData.get(position));
 
                 viewHolder.getViewById(R.id.id_musiclist_item_more).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mMorePopWindow != null) {
-                            mMorePopWindow.setData(mMusicBeanData.get(position));
-                            mMorePopWindow.showAtLocation(findViewById(R.id.id_localmusic_playall), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-                            setPopWindow();
+                        if (mBottomSheetDialog != null) {
+                            mBottomSheetDialog.setData(data);
+                            mBottomSheetDialog.show();
                         }
                     }
                 });
@@ -148,30 +149,21 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    /**
-     * 设置PopWindow中的回掉接口
-     */
-    private void setPopWindow() {
-        mMorePopWindow.setPlayNext(new MorePopWindow.IPlayNext() {
-            @Override
-            public void nect() {
 
-            }
-        });
-        mMorePopWindow.setDelet(new MorePopWindow.IdeleteSong() {
-            @Override
-            public void delete(MusicBean bean) {
+    @Override
+    public void next() {
+        MusicUtils.playNext();
+        Log.i("huangjie","执行了++++jiekou");
+    }
 
-            }
-        });
-        mMorePopWindow.setShare(new MorePopWindow.IShareSong() {
-            @Override
-            public void share(MusicBean bean) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("audio/mpeg");
-            }
-        });
+    @Override
+    public void share(MusicBean bean) {
+
+    }
+
+    @Override
+    public void delete(MusicBean bean) {
+
     }
 }
 
