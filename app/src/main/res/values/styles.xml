@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/main_color</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
     <style name="SplashTheme" parent="AppTheme">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -25,6 +26,48 @@
         <item name="android:outAnimation">
             @anim/out_animation
         </item>
+    </style>
+
+    <style name="number_textstyle">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:textColor">@color/darkgray</item>
+       <item name="android:textSize">12sp</item>
+     
+    </style>
+    
+    <style name="list_title_style">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">18dp</item>
+        <item name="android:textColor">@color/main_black</item>
+        <item name="android:textSize">16sp</item>
+
+        android:textSize="16sp"
+    </style>
+
+    <style name="item_divider_view">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginLeft">55dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:background">@color/lightgrey</item>
+
+    </style>
+
+    <style name="item_imageview_style">
+        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">15dp</item>
+
+      <item name="android:scaleType">centerCrop</item>
     </style>
 
 </resources>

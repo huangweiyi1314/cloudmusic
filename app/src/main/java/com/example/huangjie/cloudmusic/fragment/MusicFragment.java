@@ -1,13 +1,9 @@
 package com.example.huangjie.cloudmusic.fragment;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,27 +12,40 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.huangjie.cloudmusic.R;
+import com.example.huangjie.cloudmusic.activity.RecentPlayActivity;
 import com.example.huangjie.cloudmusic.bean.MusicBean;
+import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
-import com.example.huangjie.cloudmusic.view.LocalMusicActivity;
+import com.example.huangjie.cloudmusic.activity.LocalMusicActivity;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by huangjie on 2016/8/18.
  */
 public class MusicFragment extends Fragment implements View.OnClickListener {
-
-    private ProgressBar mProgressBar;
+    @BindView(R.id.id_fragment_music_progreressbar)
+    ProgressBar mProgressBar;
+    @BindView(R.id.id_fragment_music_localmusNum)
+    TextView mLocalMusicNum;
+    @BindView(R.id.id_fragment_music_recentmusicNum)
+    TextView mRecentMusicNum;
+    @BindView(R.id.id_fragment_music_downmusNum)
+    TextView mDownMusicNum;
+    @BindView(R.id.id_fragment_music_mysongernum)
+    TextView mSongerMusicNum;
+    @BindView(R.id.id_fragment_music_localMusic)
+    LinearLayout mLinearLocal;
+    @BindView(R.id.id_fragment_music_recentMusic)
+    LinearLayout mLinearRecent;
+    @BindView(R.id.id_fragment_music_downMusic)
+    LinearLayout mLinearDown;
+    @BindView(R.id.id_fragment_music_mysonger)
+    LinearLayout mLinearSonger;
     private ArrayList<MusicBean> mMusicBeanList;
-    private TextView mLocalMusicNum;
-    private TextView mRecentMusicNum;
-    private TextView mDownMusicNum;
-    private TextView mSongerMusicNum;
-    private LinearLayout mLinearLocal;
-    private LinearLayout mLinearRecent;
-    private LinearLayout mLinearDown;
-    private LinearLayout mLinearSonger;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +56,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_fragment_music, container, false);
-        initView(view);
+        ButterKnife.bind(this, view);
         initData();
         initEvent();
         return view;
@@ -65,24 +74,8 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
      * 初始化数据
      */
     private void initData() {
-        mMusicBeanList = MusicUtils.getAllMusic(mProgressBar,mLocalMusicNum,null);
+        mMusicBeanList = MusicUtils.getAllMusic(mProgressBar, mLocalMusicNum, null);
     }
-
-    /**
-     * 初始化View
-     */
-    private void initView(View view) {
-        mProgressBar = (ProgressBar) view.findViewById(R.id.id_fragment_music_progreressbar);
-        mLinearLocal = (LinearLayout) view.findViewById(R.id.id_fragment_music_localMusic);
-        mLinearRecent = (LinearLayout) view.findViewById(R.id.id_fragment_music_recentMusic);
-        mLinearDown = (LinearLayout) view.findViewById(R.id.id_fragment_music_downMusic);
-        mLinearSonger = (LinearLayout) view.findViewById(R.id.id_fragment_music_mysonger);
-        mLocalMusicNum = (TextView) view.findViewById(R.id.id_fragment_music_localmusNum);
-        mRecentMusicNum = (TextView) view.findViewById(R.id.id_fragment_music_recentmusicNum);
-        mDownMusicNum = (TextView) view.findViewById(R.id.id_fragment_music_downmusNum);
-        mSongerMusicNum = (TextView) view.findViewById(R.id.id_fragment_music_mysongernum);
-    }
-
 
     @Override
     public void onClick(View v) {
@@ -92,6 +85,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
                 intent.setClass(getActivity(), LocalMusicActivity.class);
                 break;
             case R.id.id_fragment_music_recentMusic:
+                intent.setClass(getActivity(), RecentPlayActivity.class);
                 break;
             case R.id.id_fragment_music_downMusic:
                 break;

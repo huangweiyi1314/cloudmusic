@@ -1,4 +1,4 @@
-package com.example.huangjie.cloudmusic.view;
+package com.example.huangjie.cloudmusic.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,45 +32,61 @@ import com.example.huangjie.cloudmusic.service.PlayMusicService;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
 import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
 import com.example.huangjie.cloudmusic.utils.Utils;
+import com.example.huangjie.cloudmusic.view.PlayView;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by huangjie on 2016/8/23.
  */
 public class PlayMusicActivity extends AppCompatActivity implements View.OnClickListener {
-    private ViewPager mViewPager;
+    @BindView(R.id.id_playmusic_viewpager)
+    ViewPager mViewPager;
     private ArrayList<MusicBean> mMusicBeanList;
-    private ImageView mImgStart;
-    private ImageView mImgNext;
-    private ImageView mImgPrecious;
-    private ImageView mImgMuicList;
-    private ImageView mImgPlayRule;
-    private MusicBean mCurrentMusic;
-    private ArrayList<ImageView> mImageViewList;
-    private ImageView mImgNeddle;
-    private int mCurrentPosition;
-    private ImageView mImgBack;
-    private TextView tvSongName;
-    private TextView tvSongner;
-    private SeekBar mPlayProgress;
-
+    @BindView(R.id.id_playmusic_startplay)
+    ImageView mImgStart;
+    @BindView(R.id.id_playmusic_next)
+    ImageView mImgNext;
+    @BindView(R.id.id_playmusic_precious)
+    ImageView mImgPrecious;
+    @BindView(R.id.id_playmusic_musiclist)
+    ImageView mImgMuicList;
+    @BindView(R.id.id_playmusic_playrule)
+    ImageView mImgPlayRule;
+    MusicBean mCurrentMusic;
+    @BindView(R.id.id_playmusic_neddle)
+    ImageView mImgNeddle;
+    int mCurrentPosition;
+    @BindView(R.id.id_playmusic_back)
+    ImageView mImgBack;
+    @BindView(R.id.id_playmusic_songname)
+    TextView tvSongName;
+    @BindView(R.id.id_playmusic_songner)
+    TextView tvSongner;
+    @BindView(R.id.id_playmusic_seekbar)
+    SeekBar mPlayProgress;
+    private PlayView mCurrentPlayView;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            initView();
+
+            resetTitle();//设置当前title
+
             mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
             initEvent();
 
         }
     };
 
-    private BroadcastReceiver mReceiver =new BroadcastReceiver() {
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-                playNext();
-            Log.i("huangjie","播放下一首");
+            playNext();
+            Log.i("huangjie", "播放下一首");
         }
     };
 
@@ -87,6 +103,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_play_music);
+        ButterKnife.bind(this);
         //获取传递过来的musicBean
         mCurrentMusic = (MusicBean) getIntent().getSerializableExtra(Constant.CURRENT_MUSIC);
         mCurrentPosition = getIntent().getIntExtra(Constant.CURRENT_POSITION, 1);
@@ -111,7 +128,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         }
 
         //注册广播接收器
-        registerReceiver(mReceiver,new IntentFilter(Constant.PLAY_NEXT));
+        registerReceiver(mReceiver, new IntentFilter(Constant.PLAY_NEXT));
     }
 
     /**
@@ -191,36 +208,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         });
         Log.i("huangjie", "这是第二个执行");
         mViewPager.setCurrentItem(mCurrentPosition);
-       // startService(mCurrentPosition);
         startAnimation();//开始动画
-    }
-
-
-    /**
-     * 初始化View
-     */
-    private void initView() {
-        //初始化ViewPager中的view
-        mImageViewList = new ArrayList<>();
-        for (int i = 0; i < SharePreferenceUtils.getMusicNumber(); i++) {
-            ImageView imageView = new ImageView(CloudMusicApplication.getContext());
-            imageView.setImageDrawable(Utils.getDrawable(R.drawable.placeholder_disk_play_program));
-            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            mImageViewList.add(imageView);
-        }
-        mViewPager = (ViewPager) findViewById(R.id.id_playmusic_viewpager);
-        mImgStart = (ImageView) findViewById(R.id.id_playmusic_startplay);
-        mImgNext = (ImageView) findViewById(R.id.id_playmusic_next);
-        mImgPrecious = (ImageView) findViewById(R.id.id_playmusic_precious);
-        mImgPlayRule = (ImageView) findViewById(R.id.id_playmusic_playrule);
-        mImgMuicList = (ImageView) findViewById(R.id.id_playmusic_musiclist);
-        mImgNeddle = (ImageView) findViewById(R.id.id_playmusic_neddle);
-        mImgBack = (ImageView) findViewById(R.id.id_playmusic_back);
-        tvSongName = (TextView) findViewById(R.id.id_playmusic_songname);
-        tvSongner = (TextView) findViewById(R.id.id_playmusic_songner);
-        mPlayProgress = (SeekBar) findViewById(R.id.id_playmusic_seekbar);
-        resetTitle();//设置当前title
-
     }
 
     /**
@@ -234,10 +222,11 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public ImageView instantiateItem(ViewGroup container, int position) {
-                ImageView imageView = mImageViewList.get(position);
-                container.addView(imageView);
-                return imageView;
+            public View instantiateItem(ViewGroup container, int position) {
+                PlayView playView = new PlayView(Utils.getContext());
+                mCurrentPlayView = playView;
+                container.addView(playView);
+                return playView;
             }
 
             @Override
@@ -299,6 +288,10 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         animation.setFillAfter(true);
         mImgNeddle.startAnimation(animation);
         sendBroadcast(new Intent(Constant.ACTION_STOP_PLAY));
+        if (mCurrentPlayView != null) {
+            mCurrentPlayView.clearAnimation();
+            Log.i("huangjie", "动画停止方法调用");
+        }
     }
 
     /**
@@ -310,22 +303,19 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         animation.setFillAfter(true);
         mImgNeddle.startAnimation(animation);
 
+        Animation rotate = AnimationUtils.loadAnimation(Utils.getContext(), R.anim.rotate);
+        if (mCurrentPlayView != null) {
+            mCurrentPlayView.setAnimation(rotate);
+            mCurrentPlayView.startAnimation(rotate);
+        }
     }
 
     /**
      * 打开Service
      */
     public void startService(int position) {
-
-        mImageViewList.get(position).startAnimation(AnimationUtils.loadAnimation(this, R.anim.rotate));
-
         Intent intent = new Intent(this, PlayMusicService.class);
-        /*if (SharePreferenceUtils.getPlayStatus()){
-            intent.setAction(Constant.ACTION_PAUSE);
-        }else{
-
-        }*/
-        intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanList.get(position).getUrl());
+        intent.putExtra(Constant.CURRENT_MUSIC, mMusicBeanList.get(position));
         startService(intent);
     }
 
@@ -333,8 +323,8 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 重置当前的显示的歌曲名称
      */
     public void resetTitle() {
+        //  Log.i("huangjie",mCurrentMusic.toString()+"这是当前");
         tvSongName.setText(mCurrentMusic.getName());
-
         tvSongner.setText(mCurrentMusic.getSongerName());
     }
 

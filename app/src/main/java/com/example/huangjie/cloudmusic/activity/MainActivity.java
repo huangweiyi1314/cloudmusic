@@ -1,4 +1,4 @@
-package com.example.huangjie.cloudmusic.view;
+package com.example.huangjie.cloudmusic.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

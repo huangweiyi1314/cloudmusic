@@ -3,7 +3,14 @@
     <attr name="view_color" format="color"></attr>
     <attr name="view_text" format="string"></attr>
     <declare-styleable name="DateView">
-        <attr name="view_color" ></attr>
+        <attr name="view_color"></attr>
         <attr name="view_text"></attr>
+    </declare-styleable>
+
+    <attr name="view_icon" format="reference"></attr>
+    <attr name="view_width" format="integer"></attr>
+    <declare-styleable name="PlayView">
+        <attr name="view_icon"></attr>
+        <attr name="view_width"></attr>
     </declare-styleable>
 </resources>

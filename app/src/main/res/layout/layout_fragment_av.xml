@@ -2,12 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-    <TextView
+   <!-- <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="18sp"
-        android:text="AV模块正在开发中，敬请期待"/>
+        android:text="AV模块正在开发中，敬请期待"/>-->
+    <com.example.huangjie.cloudmusic.view.PlayView
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        app:view_icon="@drawable/test"
+        android:layout_height="300dp" />
 </LinearLayout>

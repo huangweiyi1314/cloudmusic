@@ -45,7 +45,7 @@ public class MusicUtils {
 
                     String name = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     musicBean.setName(name);
-
+                    // cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Albums.ALBUM));
                     String url = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
                     musicBean.setUrl(url);
 

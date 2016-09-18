@@ -16,26 +16,18 @@ public class DataBaseUtils {
     /**
      * 存储音乐数据到数据库
      *
-     * @param id
-     * @param name
-     * @param special
-     * @param songerName
-     * @param url
-     * @param duration
-     * @param size
+     *
      */
-    public static void insert(int id, String name, String special, String songerName,
-                              String url, float duration, String size) {
+    public static void insert(MusicBean musicBean) {
         SQLiteDatabase database = MusicDatabaseHelper.getInstance().getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        values.put(Constant.MUSIC_DB_ID, id);
-        values.put(Constant.MUSIC_DB_MUSICNAME, name);
-        values.put(Constant.MUSIC_DB_SPECIAL, special);
-        values.put(Constant.MUSIC_DB_SONGERNAME, songerName);
-        values.put(Constant.MUSIC_DB_URL, url);
-        values.put(Constant.MUSIC_DB_DURATION, duration);
-        values.put(Constant.MUSIC_DB_SIZE, size);
+        values.put(Constant.MUSIC_DB_ID, musicBean.getId());
+        values.put(Constant.MUSIC_DB_MUSICNAME, musicBean.getName());
+        values.put(Constant.MUSIC_DB_SPECIAL, musicBean.getSpecial());
+        values.put(Constant.MUSIC_DB_SONGERNAME, musicBean.getSongerName());
+        values.put(Constant.MUSIC_DB_URL, musicBean.getUrl());
+        values.put(Constant.MUSIC_DB_DURATION, musicBean.getduration());
+        values.put(Constant.MUSIC_DB_SIZE, musicBean.getSize());
 
         database.insert(Constant.MUSIC_TABLE_NAME, null, values);
         database.close();
@@ -66,6 +58,16 @@ public class DataBaseUtils {
         database.close();
         cursor.close();
         return null;
+
+    }
+
+    /**
+     * 获取数据库大小
+     * @return
+     */
+    public static  long getDataBaseSize(){
+        SQLiteDatabase database = MusicDatabaseHelper.getInstance().getReadableDatabase();
+     return  database.getMaximumSize();
 
     }
 }

@@ -13,7 +13,6 @@ import com.example.huangjie.cloudmusic.R;
  * Created by huangjie on 2016/8/18.
  */
 public class AVMenuFragment extends Fragment {
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
           View view = inflater.inflate(R.layout.layout_fragment_av,container,false);

@@ -12,42 +12,19 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:scaleType="centerCrop"
+            style="@style/item_imageview_style"
             android:src="@drawable/lay_icn_mobile" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
-            android:text="本地音乐"
-            android:textColor="@color/main_black"
-            android:textSize="16sp" />
+            style="@style/list_title_style"
+            android:text="本地音乐" />
 
         <TextView
             android:id="@+id/id_fragment_music_localmusNum"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:text="(13)"
-            android:textColor="@color/main_black"
-            android:textSize="14sp" />
+            style="@style/number_textstyle" />
     </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="55dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightgrey">
-        </View>
+
+    <View style="@style/item_divider_view"></View>
 
     <LinearLayout
         android:id="@+id/id_fragment_music_recentMusic"
@@ -56,43 +33,19 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:scaleType="centerCrop"
+            style="@style/item_imageview_style"
             android:src="@drawable/lay_icn_time" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
-            android:text="最近播放"
-            android:textColor="@color/main_black"
-            android:textSize="16sp" />
+            style="@style/list_title_style"
+            android:text="最近播放" />
 
         <TextView
             android:id="@+id/id_fragment_music_recentmusicNum"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/darkgray"
-            android:textSize="12sp" />
+            style="@style/number_textstyle" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="55dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightgrey">
-
-    </View>
+    <View style="@style/item_divider_view"></View>
 
     <LinearLayout
         android:id="@+id/id_fragment_music_downMusic"
@@ -101,43 +54,19 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:scaleType="centerCrop"
+            style="@style/item_imageview_style"
             android:src="@drawable/lay_icn_dld" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
-            android:text="下载管理"
-            android:textColor="@color/main_black"
-            android:textSize="16sp" />
+            style="@style/list_title_style"
+            android:text="下载管理" />
 
         <TextView
             android:id="@+id/id_fragment_music_downmusNum"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/darkgray"
-            android:textSize="12sp" />
+            style="@style/number_textstyle" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="55dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightgrey">
-
-    </View>
+    <View style="@style/item_divider_view"></View>
 
     <LinearLayout
         android:id="@+id/id_fragment_music_mysonger"
@@ -146,33 +75,18 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:scaleType="centerCrop"
+            style="@style/item_imageview_style"
             android:src="@drawable/lay_icn_artist" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
-            android:text="我的歌手"
-            android:textColor="@color/main_black"
-            android:textSize="16sp" />
+            style="@style/list_title_style"
+            android:text="我的歌手" />
 
         <TextView
             android:id="@+id/id_fragment_music_mysongernum"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/darkgray"
-            android:textSize="12sp" />
+            style="@style/number_textstyle" />
     </LinearLayout>
+
     <ProgressBar
         android:id="@+id/id_fragment_music_progreressbar"
         android:layout_width="wrap_content"

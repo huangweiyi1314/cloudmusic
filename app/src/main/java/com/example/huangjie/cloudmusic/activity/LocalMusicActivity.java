@@ -1,4 +1,4 @@
-package com.example.huangjie.cloudmusic.view;
+package com.example.huangjie.cloudmusic.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -22,26 +22,33 @@ import com.example.huangjie.cloudmusic.utils.CommonAdapter;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
 import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
 import com.example.huangjie.cloudmusic.utils.ViewHolder;
+import com.example.huangjie.cloudmusic.view.MoreBottomSheetDialog;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by huangjie on 2016/8/22.
  */
 public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener, MoreBottomSheetDialog.IPlayNext, MoreBottomSheetDialog.IShareSong, MoreBottomSheetDialog.IdeleteSong {
-    private ListView mMusicListView;
-    private LinearLayout mLinearPlayAll;
-    private ArrayList<MusicBean> mMusicBeanData;
-    private ImageView mImgBack;
-    private ImageView mImgSearch;
-    private TextView mTitle;
-    private MoreBottomSheetDialog mBottomSheetDialog;
-    private Handler mHandler = new Handler() {
+    @BindView(R.id.id_localmusic_musicList)
+    ListView mMusicListView;
+    @BindView(R.id.id_localmusic_playall)
+    LinearLayout mLinearPlayAll;
+    ArrayList<MusicBean> mMusicBeanData;
+    @BindView(R.id.id_toolbar_title_back)
+    ImageView mImgBack;
+    @BindView(R.id.id_toolbar_title_search)
+    ImageView mImgSearch;
+    @BindView(R.id.id_toolbar_title_title)
+    TextView mTitle;
+    MoreBottomSheetDialog mBottomSheetDialog;
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
-
             setListViewAdater();
         }
     };
@@ -50,9 +57,8 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_localmusic_activity);
-
-        initView();
-
+        ButterKnife.bind(this);
+        mTitle.setText("本地音乐");
         initDate();
 
         initEvent();
@@ -86,26 +92,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     }
 
     /**
-     * 初始化View
-     */
-    private void initView() {
-        mLinearPlayAll = (LinearLayout) findViewById(R.id.id_localmusic_playall);
-        mMusicListView = (ListView) findViewById(R.id.id_localmusic_musicList);
-        mMusicListView.setDivider(new ColorDrawable(getResources().getColor(R.color.lightgray)));
-        mMusicListView.setDividerHeight(1);
-        mImgBack = (ImageView) findViewById(R.id.id_toolbar_title_back);
-        mImgSearch = (ImageView) findViewById(R.id.id_toolbar_title_search);
-        mTitle = (TextView) findViewById(R.id.id_toolbar_title_title);
-        mTitle.setText("本地音乐");
-        mBottomSheetDialog = new MoreBottomSheetDialog(this);
-        mBottomSheetDialog.setRootView(R.layout.more_popwindow);
-        mBottomSheetDialog.setPlayNext(this);
-        mBottomSheetDialog.setShare(this);
-        mBottomSheetDialog.setDelete(this);
-    }
-
-
-    /**
      * 设置ListViewAdapter
      */
     private void setListViewAdater() {
@@ -117,18 +103,21 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                 if (!data.getSongerName().equals("<unknown>")) {
                     viewHolder.setTextView(R.id.id_musiclist_item_songner, data.getSongerName());
                 }
-                //    mMorePopWindow.setData(data);
+
                 //Log.i("huangjie", "这是数据 决定是否是多少vsvs从vwefsdcsddsvv" + data.toString());
                 viewHolder.setTextView(R.id.id_musiclist_item_songspecial, data.getSpecial());
-                //  mMorePopWindow.setData(mMusicBeanData.get(position));
-
                 viewHolder.getViewById(R.id.id_musiclist_item_more).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mBottomSheetDialog != null) {
-                            mBottomSheetDialog.setData(data);
-                            mBottomSheetDialog.show();
-                        }
+                        mBottomSheetDialog = new MoreBottomSheetDialog(LocalMusicActivity.this);
+                        mBottomSheetDialog.setRootView(R.layout.more_popwindow);
+                        mBottomSheetDialog.setData(data);
+                        mBottomSheetDialog.show();
+                        mBottomSheetDialog.setPlayNext(LocalMusicActivity.this);
+                        mBottomSheetDialog.setDelete(LocalMusicActivity.this);
+                        mBottomSheetDialog.setShare(LocalMusicActivity.this);
+                        mBottomSheetDialog = null;
+
                     }
                 });
             }
@@ -144,7 +133,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             case R.id.id_toolbar_title_search:
                 break;
             case R.id.id_localmusic_playall:
-
                 break;
         }
     }
@@ -153,7 +141,7 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void next() {
         MusicUtils.playNext();
-        Log.i("huangjie","执行了++++jiekou");
+        Log.i("huangjie", "执行了++++jiekou");
     }
 
     @Override

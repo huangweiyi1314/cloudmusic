@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.util.Log;
+
 import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.constant.Constant;
+import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
 import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
-import com.example.huangjie.cloudmusic.utils.Utils;
 
 import java.io.IOException;
 
@@ -21,7 +23,6 @@ import java.io.IOException;
 public class PlayMusicService extends Service {
     private MediaPlayer mMediaPlayer;
     private MusicBean mMusicBean;
-    private String mcurrentUrl;
     //广播接收器
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -51,10 +52,10 @@ public class PlayMusicService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mcurrentUrl = intent.getStringExtra(Constant.CURRENT_MUSIC);
-        //  Log.i("huangjie",mcurrentUrl+"URL+++++++++");
+        mMusicBean = (MusicBean) intent.getSerializableExtra(Constant.CURRENT_MUSIC);
+          Log.i("huangjie",mMusicBean.getUrl()+"URL+++++++++");
 
-        startPlay(mcurrentUrl);
+        startPlay(mMusicBean.getUrl());
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -62,7 +63,7 @@ public class PlayMusicService extends Service {
         new Thread() {
             @Override
             public void run() {
-                super.run();
+              super.run();
                 SharePreferenceUtils.putPlayStatus(true);
                 try {
                     if (mMediaPlayer == null) {
@@ -76,7 +77,8 @@ public class PlayMusicService extends Service {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mp.start();
-
+                           DataBaseUtils.insert(mMusicBean);
+                          //  Log.i("huangjie",mMusicBean.getId()+"这是当前的music ID");
                         }
                     });
                     mMediaPlayer.prepare();

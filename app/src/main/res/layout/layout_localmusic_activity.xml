@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <include layout="@layout/toolbar_title">
-
     </include>
   <LinearLayout
       android:id="@+id/id_localmusic_playall"
