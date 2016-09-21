@@ -45,11 +45,11 @@ public class PlayView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         BitmapFactory.Options options = new BitmapFactory.Options();
-        mDisIcon = BitmapFactory.decodeResource(getResources(), R.drawable.play_disc, options);
-        // options.inJustDecodeBounds = true;
+        BitmapFactory.decodeResource(getResources(), R.drawable.play_disc, options);
+         options.inJustDecodeBounds = true;
         int rateX = Math.round(options.outWidth * 1.0f / (getMeasuredWidth()));
-        int rateY = Math.round(mDisIcon.getHeight() * 1.0f / (getMeasuredHeight()));
-        Log.i("huangjie", mDisIcon.getWidth() + "这是图片宽度" + getMeasuredWidth() + "测量宽度");
+        int rateY = Math.round(options.outHeight * 1.0f / (getMeasuredHeight()));
+        Log.i("huangjie", options.outWidth + "这是图片宽度" + getMeasuredWidth() + "测量宽度");
         int rate = Math.min(rateX, rateY);
         options.inJustDecodeBounds = false;
         options.inSampleSize = rate;
@@ -64,7 +64,7 @@ public class PlayView extends View {
         paint.setAntiAlias(true);
         paint.setDither(true);
         canvas.drawBitmap(mDisIcon, (getMeasuredWidth() - mDisIcon.getWidth()) / 2, (getMeasuredHeight() - mDisIcon.getHeight()) / 2, paint);
-        Log.i("huangjie", mDisIcon.getWidth() + "这是图片宽度11111" + getMeasuredWidth() + "测量宽度");
+       // Log.i("huangjie", mDisIcon.getWidth() + "这是图片宽度11111" + getMeasuredWidth() + "测量宽度");
         Bitmap icon = getRoundBitmap();
         canvas.drawBitmap(icon, (getMeasuredWidth() - mWidth) / 2, (getMeasuredHeight() - mWidth) / 2, null);
     }
@@ -84,7 +84,7 @@ public class PlayView extends View {
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         BitmapFactory.Options option = new BitmapFactory.Options();
         option.inJustDecodeBounds = true;
-        Bitmap srouce = BitmapFactory.decodeResource(getResources(), R.drawable.test, option);
+         BitmapFactory.decodeResource(getResources(), R.drawable.test, option);
         int rateX = Math.round(option.outWidth * 1.0f / mWidth);
         int rateY = Math.round(option.outHeight * 1.0f / mWidth);
         int rate = Math.max(rateX, rateY);
@@ -92,6 +92,7 @@ public class PlayView extends View {
         option.inSampleSize = rate;
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.test, option);
         canvas.drawBitmap(icon, 0, 0, paint);
+        icon=null;
         return target;
     }
 }
