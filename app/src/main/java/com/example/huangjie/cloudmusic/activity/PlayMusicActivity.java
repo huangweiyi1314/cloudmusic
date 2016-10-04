@@ -282,6 +282,7 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 停止动画
      */
     private void stopAnimation() {
+
         mImgNeddle.clearAnimation();
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_d_45);
         mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_play));
