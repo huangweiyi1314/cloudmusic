@@ -41,6 +41,7 @@ public class MusicUtils {
                 Cursor cursor = CloudMusicApplication.getContext().getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null, null,
                         MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
                 while (cursor.moveToNext()) {
+
                     MusicBean musicBean = new MusicBean();
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     musicBean.setId(id);
