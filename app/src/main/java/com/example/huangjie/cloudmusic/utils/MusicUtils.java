@@ -83,6 +83,7 @@ public class MusicUtils {
 
     /**
      * 播放下一首
+     *
      */
     public static void playNext() {
         Utils.getContext().sendBroadcast(new Intent(Constant.PLAY_NEXT));
