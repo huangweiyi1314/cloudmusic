@@ -17,6 +17,7 @@ import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.utils.MusicUtils;
 import com.example.huangjie.cloudmusic.activity.LocalMusicActivity;
+import com.example.huangjie.cloudmusic.utils.SharePreferenceUtils;
 
 import java.util.ArrayList;
 
@@ -45,8 +46,6 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     LinearLayout mLinearDown;
     @BindView(R.id.id_fragment_music_mysonger)
     LinearLayout mLinearSonger;
-    private ArrayList<MusicBean> mMusicBeanList;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,7 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.layout_fragment_music, container, false);
         ButterKnife.bind(this, view);
-        initData();
+        mLocalMusicNum.setText(SharePreferenceUtils.getMusicNumber()+"");
         initEvent();
         return view;
     }
@@ -68,13 +67,6 @@ public class MusicFragment extends Fragment implements View.OnClickListener {
      */
     private void initEvent() {
         mLinearLocal.setOnClickListener(this);
-    }
-
-    /**
-     * 初始化数据
-     */
-    private void initData() {
-        mMusicBeanList = MusicUtils.getAllMusic(mProgressBar, mLocalMusicNum, null);
     }
 
     @Override

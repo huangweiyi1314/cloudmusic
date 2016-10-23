@@ -57,16 +57,5 @@ public class SharePreferenceUtils {
 
     }
 
-   /* *//**
-     * 存储当前正在播放的music
-     *//*
-    public static void saveNowMusic(){
-
-        SharedPreferences.Editor editor = getInstance().edit();
-
-    }*/
-
-
-
 
 }

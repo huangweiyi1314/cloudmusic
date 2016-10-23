@@ -15,8 +15,6 @@ public class DataBaseUtils {
 
     /**
      * 存储音乐数据到数据库
-     *
-     *
      */
     public static void insert(MusicBean musicBean) {
         SQLiteDatabase database = MusicDatabaseHelper.getInstance().getWritableDatabase();
@@ -39,7 +37,7 @@ public class DataBaseUtils {
      * @param id
      * @return
      */
-    public static MusicBean search(int id) {
+    public static void search(int id, CallBack callBack) {
         MusicBean musicBean = new MusicBean();
         SQLiteDatabase database = MusicDatabaseHelper.getInstance().getReadableDatabase();
         Cursor cursor = database.query(Constant.MUSIC_TABLE_NAME, null, "id =" + id, new String[]{id + ""}, null, null, null);
@@ -52,22 +50,27 @@ public class DataBaseUtils {
                 musicBean.setUrl(cursor.getString(cursor.getColumnIndex(Constant.MUSIC_DB_URL)));
                 musicBean.setduration(cursor.getFloat(cursor.getColumnIndex(Constant.MUSIC_DB_DURATION)));
                 musicBean.setSize(cursor.getString(cursor.getColumnIndex(Constant.MUSIC_DB_SIZE)));
-                return musicBean;
+                if (callBack != null) {
+                    callBack.success(musicBean);
+                }
             }
         }
         database.close();
         cursor.close();
-        return null;
-
     }
 
     /**
      * 获取数据库大小
+     *
      * @return
      */
-    public static  long getDataBaseSize(){
+    public static long getDataBaseSize() {
         SQLiteDatabase database = MusicDatabaseHelper.getInstance().getReadableDatabase();
-     return  database.getMaximumSize();
+        return database.getMaximumSize();
 
+    }
+
+    public interface CallBack {
+        void success(MusicBean musicBean);
     }
 }

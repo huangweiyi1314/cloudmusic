@@ -1,7 +1,6 @@
 package com.example.huangjie.cloudmusic.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,13 +44,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
     @BindView(R.id.id_toolbar_title_title)
     TextView mTitle;
     MoreBottomSheetDialog mBottomSheetDialog;
-    Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            setListViewAdater();
-        }
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +52,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         ButterKnife.bind(this);
         mTitle.setText("本地音乐");
         initDate();
-
         initEvent();
     }
 
@@ -87,7 +78,18 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
      */
     private void initDate() {
         final TextView songNumber = (TextView) findViewById(R.id.id_localmusic_songnumber);
-        mMusicBeanData = MusicUtils.getAllMusic(null, songNumber, mHandler);
+        MusicUtils.getAllMusic(null, new MusicUtils.CallBack() {
+            @Override
+            public void success(ArrayList<MusicBean> datalist) {
+                if (mMusicBeanData != null && datalist != null) {
+                    mMusicBeanData.clear();
+                    mMusicBeanData.addAll(datalist);
+                    songNumber.setText(datalist.size() + "首");
+
+                    setListViewAdater();
+                }
+            }
+        });
 
     }
 
@@ -104,7 +106,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                     viewHolder.setTextView(R.id.id_musiclist_item_songner, data.getSongerName());
                 }
 
-                //Log.i("huangjie", "这是数据 决定是否是多少vsvs从vwefsdcsddsvv" + data.toString());
                 viewHolder.setTextView(R.id.id_musiclist_item_songspecial, data.getSpecial());
                 viewHolder.getViewById(R.id.id_musiclist_item_more).setOnClickListener(new View.OnClickListener() {
                     @Override

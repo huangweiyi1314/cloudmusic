@@ -107,7 +107,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
         //获取传递过来的musicBean
         mCurrentMusic = (MusicBean) getIntent().getSerializableExtra(Constant.CURRENT_MUSIC);
         mCurrentPosition = getIntent().getIntExtra(Constant.CURRENT_POSITION, 1);
-        Log.i("huangjie", "这是第一个执行");
 
         if (mCurrentMusic == null) {
             mCurrentMusic = mMusicBeanList.get(0);
@@ -136,7 +135,15 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      */
     private void initData() {
         mMusicBeanList = new ArrayList<>();
-        mMusicBeanList = MusicUtils.getAllMusic(null, null, mHandler);
+        MusicUtils.getAllMusic(null, new MusicUtils.CallBack() {
+            @Override
+            public void success(ArrayList<MusicBean> datalist) {
+                if (datalist != null) {
+                    mMusicBeanList.clear();
+                    mMusicBeanList.addAll(datalist);
+                }
+            }
+        });
     }
 
 
@@ -169,7 +176,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                 startAnimation();
                 mCurrentMusic = mMusicBeanList.get(position);
                 resetTitle();
-                //    Log.i("huangjie", mMusicBeanList.get(position).toString() + "这是切换数据");
                 startService(position);
                 Log.i("huangjie", "切换当前执行222222222222");
             }
@@ -179,7 +185,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
                 Log.i("huangjie", "切换当前执行333333333" + state);
                 switch (state) {
                     case 1:
-                        mImgNeddle.clearAnimation();
                         if (SharePreferenceUtils.getPlayStatus()) {
                             //  mImgStart.setImageDrawable(Utils.getDrawable(R.drawable.play_btn_pause));
                             stopAnimation();
@@ -206,9 +211,8 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
-        Log.i("huangjie", "这是第二个执行");
         mViewPager.setCurrentItem(mCurrentPosition);
-        startAnimation();//开始动画
+
     }
 
     /**
@@ -324,7 +328,6 @@ public class PlayMusicActivity extends AppCompatActivity implements View.OnClick
      * 重置当前的显示的歌曲名称
      */
     public void resetTitle() {
-        //  Log.i("huangjie",mCurrentMusic.toString()+"这是当前");
         tvSongName.setText(mCurrentMusic.getName());
         tvSongner.setText(mCurrentMusic.getSongerName());
     }

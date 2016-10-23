@@ -7,10 +7,12 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.TextView;
+
 import com.example.huangjie.cloudmusic.bean.MusicBean;
 import com.example.huangjie.cloudmusic.constant.Constant;
 import com.example.huangjie.cloudmusic.database.DataBaseUtils;
 import com.example.huangjie.cloudmusic.global.CloudMusicApplication;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,7 @@ public class MusicUtils {
      *
      * @return
      */
-    public static ArrayList<MusicBean> getAllMusic(final View view, final TextView textView, final Handler handler) {
+    public static void getAllMusic(final View view, final CallBack callBack) {
         final ArrayList<MusicBean> mMusicBeanList = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>() {
@@ -60,10 +62,8 @@ public class MusicUtils {
 
                     int size = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
                     musicBean.setSize((int) ((size * 1.0) / (1024 * 1024)) + "M");
-             //       Log.i("huangjie", musicBean.toString());
+
                     mMusicBeanList.add(musicBean);
-                    int album_id = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-              //      DataBaseUtils.insert(id,name,speical,songerName,url,duration,(int) ((size * 1.0) / (1024 * 1024)) + "M");
 
                 }
                 return null;
@@ -72,26 +72,23 @@ public class MusicUtils {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                if (view != null) {
-                    view.setVisibility(View.GONE);
-                }
-                if (textView != null) {
-                    textView.setText("("+mMusicBeanList.size() + ")");
-                }
-                if (handler != null) {
-                    handler.sendEmptyMessage(0x11);
+                if (callBack != null) {
+                    SharePreferenceUtils.putMusicNumber(mMusicBeanList.size());
+                    callBack.success(mMusicBeanList);
                 }
             }
         }.execute();
-
-        return mMusicBeanList;
 
     }
 
     /**
      * 播放下一首
      */
-    public static  void playNext(){
+    public static void playNext() {
         Utils.getContext().sendBroadcast(new Intent(Constant.PLAY_NEXT));
+    }
+
+    public interface CallBack {
+        void success(ArrayList<MusicBean> datalist);
     }
 }
